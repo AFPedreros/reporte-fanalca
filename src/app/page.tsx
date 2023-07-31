@@ -6,9 +6,8 @@ import { ScrollTrigger } from 'gsap/all';
 export default function Home() {
 	const firstText = useRef(null);
 	const secondText = useRef(null);
+	const thirdText = useRef(null);
 	const slider = useRef(null);
-
-	const textWrapper = useRef(null);
 
 	let xPercent = 0;
 	let direction = -1;
@@ -23,13 +22,14 @@ export default function Home() {
 
 		gsap.set(firstText.current, { xPercent: xPercent });
 		gsap.set(secondText.current, { xPercent: xPercent });
+		gsap.set(thirdText.current, { xPercent: xPercent });
 		requestAnimationFrame(animate);
 		xPercent += 0.05 * direction;
 	};
 
 	useEffect(() => {
 		gsap.registerPlugin(ScrollTrigger);
-		gsap.to([firstText.current, secondText.current], {
+		gsap.to([firstText.current, secondText.current, thirdText.current], {
 			scrollTrigger: {
 				trigger: document.documentElement,
 				scrub: 0.25,
@@ -58,6 +58,9 @@ export default function Home() {
 							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
 						</p>
 						<p ref={secondText} className="pl-2 whitespace-nowrap">
+							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
+						</p>
+						<p ref={thirdText} className="pl-2 whitespace-nowrap">
 							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
 						</p>
 					</div>
