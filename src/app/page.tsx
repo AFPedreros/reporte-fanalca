@@ -8,6 +8,8 @@ export default function Home() {
 	const secondText = useRef(null);
 	const slider = useRef(null);
 
+	const textWrapper = useRef(null);
+
 	let xPercent = 0;
 	let direction = -1;
 
@@ -50,12 +52,12 @@ export default function Home() {
 	return (
 		<main className="relative flex-col min-h-screen overflow-hidden bg-primary">
 			<section className="h-screen">
-				<div className="absolute w-screen text-3xl text-primary-foreground font-bold md:text-6xl top-[calc(100vh-150px)]">
-					<div ref={slider} className="relative flex overflow-hidden w-fit flex-nowrap">
-						<p ref={firstText} className="relative pr-2 m-0 whitespace-nowrap">
+				<div className="absolute w-screen text-3x text-primary-foreground font-bold md:text-6xl top-[calc(100vh-150px)]">
+					<div ref={slider} className="relative flex flex-nowrap">
+						<p ref={firstText} className="relative m-0 whitespace-nowrap">
 							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
 						</p>
-						<p ref={secondText} className="absolute top-0 left-full whitespace-nowrap">
+						<p ref={secondText} className="pl-2 whitespace-nowrap">
 							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
 						</p>
 					</div>
