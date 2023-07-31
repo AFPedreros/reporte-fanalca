@@ -32,7 +32,7 @@ export default function NavbarBody({ links, selectedLink, setSelectedLink }: Nav
 	};
 
 	return (
-		<div className="flex flex-col gap-4 md:gap-6">
+		<div className="flex flex-col overflow-hidden justify-evenly">
 			{links.map((link, index) => {
 				const { title, href } = link;
 				return (
@@ -44,7 +44,7 @@ export default function NavbarBody({ links, selectedLink, setSelectedLink }: Nav
 							onMouseLeave={() => {
 								setSelectedLink({ isActive: false, index });
 							}}
-							className="flex overflow-hidden text-4xl md:text-8xl pr-8 uppercase"
+							className="flex pr-8 overflow-hidden text-4xl uppercase md:text-8xl"
 							variants={blur}
 							animate={selectedLink.isActive && selectedLink.index != index ? 'open' : 'closed'}
 						>

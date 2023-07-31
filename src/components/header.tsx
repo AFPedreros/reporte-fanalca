@@ -1,19 +1,29 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { headerOpacity } from '@/lib/anim';
 import { Icons } from '@/components/icons';
 import NavBar from '@/components/navbar';
+import { convertSlugToTitle } from '@/lib/utils';
 
 export default function index() {
 	const [isActive, setIsActive] = useState(false);
+	const pathname = usePathname();
+
+	useEffect(() => {
+		setIsActive(false);
+	}, [pathname]);
 
 	return (
-		<header className="bg-primary text-primary-foreground sticky top-0 z-40 w-full p-2 md:p-5">
-			<div className="flex justify-between items-center uppercase font-light relative container">
-				<Link href="/">Logo Fanalca</Link>
+		<header className="fixed top-0 z-40 w-full border-b bg-primary text-primary-foreground">
+			<div className="container flex items-center justify-between h-16 font-light uppercase">
+				<Link href="/">
+					<Image src="/logo-blanco.svg" width={150} height={40} alt="Logo Fanalca" />
+				</Link>
 				<div
 					onClick={() => {
 						setIsActive(!isActive);
@@ -31,7 +41,7 @@ export default function index() {
 					</div>
 				</div>
 				<motion.p variants={headerOpacity} animate={!isActive ? 'open' : 'closed'} className="hidden md:block">
-					Página actual
+					{convertSlugToTitle(pathname)}
 				</motion.p>
 			</div>
 			<AnimatePresence mode="wait">{isActive && <NavBar />}</AnimatePresence>

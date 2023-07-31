@@ -1,7 +1,45 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
 
 export default function Home() {
+	const firstText = useRef(null);
+	const secondText = useRef(null);
+	const slider = useRef(null);
+
+	let xPercent = 0;
+	let direction = -1;
+
+	const animate = () => {
+		xPercent += 0.1 * direction;
+		if (xPercent < -100) {
+			xPercent = 0;
+		} else if (xPercent > 0) {
+			xPercent = -100;
+		}
+
+		gsap.set(firstText.current, { xPercent: xPercent });
+		gsap.set(secondText.current, { xPercent: xPercent });
+		requestAnimationFrame(animate);
+		xPercent += 0.05 * direction;
+	};
+
+	useEffect(() => {
+		gsap.registerPlugin(ScrollTrigger);
+		gsap.to([firstText.current, secondText.current], {
+			scrollTrigger: {
+				trigger: document.documentElement,
+				scrub: 0.25,
+				start: 0,
+				end: window.innerHeight,
+				onUpdate: (e) => (direction = e.direction * -1),
+			},
+			x: '-500px',
+		});
+		requestAnimationFrame(animate);
+	}, []);
+
 	useEffect(() => {
 		(async () => {
 			const LocomotiveScroll = (await import('locomotive-scroll')).default;
@@ -10,15 +48,23 @@ export default function Home() {
 	}, []);
 
 	return (
-		<main>
-			{/* <AnimatePresence mode='wait'>
-        {isLoading && <Preloader />}
-      </AnimatePresence>
-      <Landing />
-      <Description />
-      <Projects />
-      <SlidingImages />
-      <Contact /> */}
+		<main className="relative flex-col min-h-screen overflow-hidden bg-primary">
+			<section className="h-screen">
+				<div className="absolute w-screen text-3xl text-primary-foreground font-bold md:text-6xl top-[calc(100vh-150px)]">
+					<div ref={slider} className="relative flex overflow-hidden w-fit flex-nowrap">
+						<p ref={firstText} className="relative pr-2 m-0 whitespace-nowrap">
+							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
+						</p>
+						<p ref={secondText} className="absolute top-0 left-full whitespace-nowrap">
+							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section className="flex items-center justify-center h-screen bg-background">
+				<p>Freelance Developer -</p>
+			</section>
 		</main>
 	);
 }
