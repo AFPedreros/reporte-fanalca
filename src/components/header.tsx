@@ -9,6 +9,7 @@ import { headerOpacity } from '@/lib/anim';
 import { Icons } from '@/components/icons';
 import NavBar from '@/components/navbar';
 import { convertSlugToTitle } from '@/lib/utils';
+import { cn } from "@/lib/utils"
 
 export default function index() {
 	const [isActive, setIsActive] = useState(false);
@@ -24,6 +25,7 @@ export default function index() {
 				<Link href="/">
 					<Image src="/logo-blanco.svg" width={150} height={40} alt="Logo Fanalca" />
 				</Link>
+
 				<div
 					onClick={() => {
 						setIsActive(!isActive);
@@ -31,15 +33,19 @@ export default function index() {
 					className="flex items-center justify-center space-x-2 cursor-pointer"
 				>
 					{isActive ? <Icons.close className="w-6 h-6" /> : <Icons.menu className="w-6 h-6" />}
-					<div className="relative flex items-center h-full">
-						<motion.p variants={headerOpacity} animate={!isActive ? 'open' : 'closed'}>
+					<div className='relative flex items-center'>
+						<motion.p variants={headerOpacity} animate={!isActive ? 'open' : 'closed'} >
 							Menu
 						</motion.p>
-						<motion.p variants={headerOpacity} animate={isActive ? 'open' : 'closed'} className="absolute">
+
+						<motion.p variants={headerOpacity} animate={isActive ? 'open' : 'closed'} className={cn(isActive ? "absolute" : "hidden")}>
 							Close
 						</motion.p>
+
 					</div>
+
 				</div>
+
 				<motion.p variants={headerOpacity} animate={!isActive ? 'open' : 'closed'} className="hidden md:block">
 					{convertSlugToTitle(pathname)}
 				</motion.p>

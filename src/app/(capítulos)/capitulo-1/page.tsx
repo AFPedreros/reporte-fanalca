@@ -14,25 +14,40 @@ export default function Home() {
 		})();
 	}, []);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		gsap.registerPlugin(ScrollTrigger);
-		const timeline = gsap.timeline({
-			scrollTrigger: {
-				trigger: document.documentElement,
-				scrub: true,
-				start: 'top',
-				end: '+=500px',
-			},
-		});
 
-		timeline.from(background.current, { clipPath: 'inset(15%)' });
+
+		if (background.current) {
+			const timeline = gsap.timeline({
+				scrollTrigger: {
+					trigger: document.documentElement,
+					scrub: true,
+					start: 'top',
+					end: '+=500px',
+				},
+			});
+
+			timeline.from(background.current, { clipPath: 'inset(15%)' });
+		}
+
+
 	}, []);
+
 
 	return (
 		<>
-			<section className="relative flex justify-center w-full h-[140vh] overflow-hidden">
+			<section className="relative bg-primary flex justify-center w-full h-[140vh] overflow-hidden">
 				<div ref={background} className="absolute inset-0 bg-primary">
-					<Image src={'/images/img-cap-1.png'} alt="Imagen de capítulo 1" layout="fill" priority={true} className="object-cover" />
+					<Image
+						src="/images/img-cap-1.png"
+						alt="Imagen de capítulo 1"
+						layout="fill"
+						objectFit="cover"
+						priority={true}
+						className="object-cover"
+					/>
+
 				</div>
 				<div className="relative z-10 flex justify-center mt-[35vh]">
 					<h1 data-scroll data-scroll-speed="0.7" className="text-3xl font-bold text-center whitespace-nowrap text-primary-foreground md:text-6xl">

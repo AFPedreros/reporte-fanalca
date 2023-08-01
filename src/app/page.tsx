@@ -6,11 +6,12 @@ import { ScrollTrigger } from 'gsap/all';
 export default function Home() {
 	const firstText = useRef(null);
 	const secondText = useRef(null);
-	const thirdText = useRef(null);
 	const slider = useRef(null);
 
 	let xPercent = 0;
 	let direction = -1;
+
+	let animateId: number;
 
 	const animate = () => {
 		xPercent += 0.1 * direction;
@@ -22,25 +23,35 @@ export default function Home() {
 
 		gsap.set(firstText.current, { xPercent: xPercent });
 		gsap.set(secondText.current, { xPercent: xPercent });
-		gsap.set(thirdText.current, { xPercent: xPercent });
-		requestAnimationFrame(animate);
+		animateId = requestAnimationFrame(animate);
 		xPercent += 0.05 * direction;
 	};
 
 	useEffect(() => {
 		gsap.registerPlugin(ScrollTrigger);
-		gsap.to([firstText.current, secondText.current, thirdText.current], {
-			scrollTrigger: {
-				trigger: document.documentElement,
-				scrub: 0.25,
-				start: 0,
-				end: window.innerHeight,
-				onUpdate: (e) => (direction = e.direction * -1),
-			},
-			x: '-500px',
-		});
-		requestAnimationFrame(animate);
+
+		if (firstText.current && secondText.current) {
+			const animation = gsap.to([firstText.current, secondText.current], {
+				scrollTrigger: {
+					trigger: document.documentElement,
+					scrub: 0.25,
+					start: 0,
+					end: window.innerHeight,
+					onUpdate: (e) => (direction = e.direction * -1),
+				},
+				x: '-500px',
+			});
+			animateId = requestAnimationFrame(animate);
+
+			// Limpieza al desmontar
+			return () => {
+				animation.kill();
+				cancelAnimationFrame(animateId);
+			};
+		}
 	}, []);
+
+
 
 	useEffect(() => {
 		(async () => {
@@ -57,10 +68,8 @@ export default function Home() {
 						<p ref={firstText} className="relative m-0 whitespace-nowrap">
 							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
 						</p>
-						<p ref={secondText} className="pl-2 whitespace-nowrap">
-							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
-						</p>
-						<p ref={thirdText} className="pl-2 whitespace-nowrap">
+
+						<p ref={secondText} className="whitespace-nowrap">
 							EXPLORA LAS PRINCIPALES ESTRATEGIAS DE SOSTENIBILIDAD -
 						</p>
 					</div>
